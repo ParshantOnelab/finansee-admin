@@ -5,9 +5,9 @@ import { useAuthenticateQuery } from "./store/api"; // adjust the import if need
 import type { JSX } from "react";
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
-  const { data, error } = useAuthenticateQuery({});
+  const { data, error, isLoading } = useAuthenticateQuery({});
 
-    
+  if (isLoading) return <div>Loading...</div>;
   if (error || !data) {
     // Not authenticated or error during auth check
     console.log("Authentication error:", error);

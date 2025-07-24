@@ -51,7 +51,6 @@ export const api = createApi({
                 credentials: 'include',
             }),
             // providesTags: ['User'],
-            keepUnusedDataFor: 0, // immediately remove cache
         }),
         registerUser: builder.mutation({
             query: ({ name, email, password, role }: { name: string, email: string, password: string, role: string }) => ({
