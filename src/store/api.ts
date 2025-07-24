@@ -1,10 +1,39 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
+// Base query with credentials
+const baseQuery = fetchBaseQuery({
+    baseUrl: import.meta.env.VITE_SERVER_URL,
+    credentials: "include",
+});
+
+const customBaseQuery: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (
+    args,
+    api,
+    extraOptions
+) => {
+    const result = await baseQuery(args, api, extraOptions);
+
+    if (result.error && result.error.status === 401) {
+        const currentPath = window.location.pathname;
+
+        // Avoid redirect loop if already on login page
+        if (currentPath !== "/login") {
+            localStorage.clear();
+            sessionStorage.clear();
+
+            // Optional: dispatch logout action
+            // api.dispatch(userLoggedOut());
+
+            window.location.href = "/login";
+        }
+    }
+
+    return result;
+};
 export const api = createApi({
     reducerPath: "customersData",
-    baseQuery: fetchBaseQuery({
-        baseUrl: import.meta.env.VITE_SERVER_URL
-    }),
+    baseQuery: customBaseQuery,
     tagTypes: ['Users'],
     endpoints: (builder) => ({
         login: builder.mutation({

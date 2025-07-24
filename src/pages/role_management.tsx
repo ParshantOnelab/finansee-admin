@@ -175,7 +175,7 @@ function RoleManagement() {
 
             {isError && (
               <div style={{ color: 'red', marginTop: 12 }}>
-                Error: {(error as any)?.data?.message || 'Something went wrong.'}
+                Error: {(isError as any)?.data?.message || 'Something went wrong.'}
               </div>
             )}
           </form>
