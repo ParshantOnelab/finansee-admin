@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
 import { useLoginMutation } from '../store/api'
 import { useNavigate } from 'react-router-dom'
+import { setToken } from '../store/reducers'
+import { useDispatch } from 'react-redux'
 
 function Login() {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const [login] = useLoginMutation()
     const [formData, setFormData] = useState({
         email: '',
@@ -21,7 +24,8 @@ function Login() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         try {
-            await login({ email: formData.email, password: formData.password }).unwrap()
+            const data = await login({ email: formData.email, password: formData.password }).unwrap()
+            dispatch(setToken(data?.token))
             alert('Login successful! Welcome to the dashboard.')
             navigate('/dashboard')
             // console.log(document.cookie, 'cookie')

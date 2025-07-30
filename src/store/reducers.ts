@@ -32,12 +32,23 @@ export const roleReducer = createSlice({
     }
 })
 
+export const tokenReducer = createSlice({
+    name: "token",
+    initialState: "",
+    reducers: {
+        setToken: (_state, action) => action.payload,
+        clearToken: () => ""
+    }
+})
+
 export const { setUsersData } = usersReducer.actions;
 export const { setRoleData } = roleReducer.actions;
+export const { setToken, clearToken } = tokenReducer.actions;
 
 const rootReducer = combineReducers({
     users: usersReducer.reducer,
-    roles: roleReducer.reducer
+    roles: roleReducer.reducer,
+    token: tokenReducer.reducer
 });
 
 export default rootReducer;

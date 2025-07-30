@@ -4,6 +4,8 @@ import { useNavigation } from '../hooks/useNavigation'
 import { useNavigate } from 'react-router-dom';
 import { ThemeProviderContext } from './theme-provider';
 import { useLogoutMutation } from "../store/api"
+import { setToken } from '../store/reducers'
+import { useDispatch } from 'react-redux'
 
 function Header() {
     const { currentPage } = useNavigation();
@@ -14,7 +16,7 @@ function Header() {
     const { theme, setTheme: setCurrentTheme } = constext;
 
     const [logout, { isLoading: isLoggingOut }] = useLogoutMutation();
-
+    const dispatch = useDispatch()
 
     useEffect(() => {
         const checkMobile = () => {
@@ -41,6 +43,7 @@ function Header() {
     const handleLogout = async () => {
         try {
             await logout({}).unwrap();
+            dispatch(setToken(''))
             navigate('/login');
         } catch {
             // Optionally handle error

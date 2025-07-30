@@ -1,12 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { api } from './api'
-import { usersReducer,roleReducer } from './reducers'
+import { usersReducer,roleReducer,tokenReducer } from './reducers'
 
 export const store = configureStore({
   reducer: {
     [api.reducerPath]:api.reducer,
     [usersReducer.name]: usersReducer.reducer,
-    [roleReducer.name]: roleReducer.reducer
+    [roleReducer.name]: roleReducer.reducer,
+    [tokenReducer.name]: tokenReducer.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(api.middleware),
